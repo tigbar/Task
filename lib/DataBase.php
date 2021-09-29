@@ -37,7 +37,7 @@ class DataBase
     public function query($sql, $binds = [], $type='FETCH_OBJ'){
         $query = $this->pdo->prepare($sql);
         $query->execute($binds);
-        $query->setFetchMode(PDO::FETCH_ASSOC);
+        $query->setFetchMode(PDO::FETCH_OBJ);
         return $query;
     }
 

@@ -46,4 +46,13 @@ class Order
     public static function getTableName(){
         return 'orders';
     }
+
+    public function insert(){
+        $db = DataBase::getInstance();
+        $table = static::getTableName();
+        $sql = "INSERT INTO " . $this->getTableName() . "(`user_id`, `sum`, `order_date`) VALUES (?,?,?)";
+        $db->query($sql, [$this->getUserId(), $this->getSum(), $this->getOrderDate()]);
+        $this->id = $db->lastInsertedId();
+        return $this;
+    }
 }

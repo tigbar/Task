@@ -60,7 +60,6 @@ class ProductController extends DefaultController
 
         $products = $db->queryAll('SELECT * FROM ' . $this->productModel->getTableName());
 
-
         $newProductCreated = $session->get('newProduct', false);
         if ($newProductCreated) {
             $session->remove('newProduct');
@@ -89,9 +88,9 @@ class ProductController extends DefaultController
     }
 
     public function addToChart($list){
-//        echo '<pre>'; print_r($list);die;
         $totalSum = 0;
         $cartProducts = [];
+        $cartCounts = [];
         foreach($list['Products'] as $key=>$value){
             if($value['count'] > 0){
                 $totalSum += $value['count'] * $value['price'];
@@ -99,13 +98,18 @@ class ProductController extends DefaultController
                 echo $value['name'] . '&nbsp' . $value['price'] . '&nbsp' . $value['description'] . '<br/>';
 
                 array_push($cartProducts, $key);
+                array_push($cartCounts, $value['count']);
             }
         }
+
+
         setcookie("products", json_encode($cartProducts), time() + (86400 * 30), "/");
+        setcookie("counts", json_encode($cartCounts), time() + (86400 * 30), "/");
 
         echo "<br/><b>Total Price: " . $totalSum . '</b><hr/><br/><br/>';
 
-        require_once dirname(__DIR__) . '\views\Product\approove.php';
+        $dirname = dirname(__DIR__);
+        require_once $dirname . '\views\Product\approove.php';
     }
 
     public function approove($params){
@@ -113,45 +117,43 @@ class ProductController extends DefaultController
         $order = new Order();
         $orderProduct = new OrderProduct();
 
-
         $db = DataBase::getInstance();
         $productsIDs = $_COOKIE['products'];
-
+        $productsCounts = $_COOKIE['counts'];
 
         $productsIDs = substr($productsIDs,1);
         $productsIDs = substr_replace($productsIDs, '', -1);
 
-        $productsIDs = explode(',', $productsIDs);
-
-//        $productsIDs = json_encode($productsIDs);
-//        print_r($productsIDs);
-
-        $sql = 'select * from ' . $product->getTableName() . ' where id in (';
-        foreach($productsIDs as $id){
-            $sql .= $id . ',';
+        $productsCounts = substr($productsCounts,1);
+        $productsCounts = substr_replace($productsCounts, '', -1);
+        $productsCounts = explode(',', $productsCounts);
+        $productsCountsFormated = [];
+        foreach($productsCounts as $element){
+            $element = substr($element,1);
+            $element = substr_replace($element, '', -1);
+            array_push($productsCountsFormated, $element);
         }
-        $sql = substr_replace($sql, '', -1);
-        $sql .= ')';
-        $prods = $db->queryOne($sql, $productsIDs);
-//        var_dump($prods);die;
-//        echo $sql;die;
 
-        $reciever = 't_barseghyan@yahoo.com';
-        $subject = 'Test market approove mail';
-        $message = '<!doctype html>
+        $sql = 'select * from ' . $product->getTableName() . ' where id in (' . $productsIDs . ')';
+
+        $productsIDs = explode(',', $productsIDs);
+        $prods = $db->queryAll($sql, $productsIDs);
+
+            $reciever = 't_barseghyan@yahoo.com';
+            $subject = 'Test market approove mail';
+            $veryTotalPrice = 0;
+            $message = '<!doctype html>
                     <html>
                     <br/>
-                        <b>Dear ' . $params['firstName'] . ' ' . $params['lastName'] . 'You have bout following products: </b>';
-//                        foreach($prods as $prod){
-                            $message .= '<b>Name- </b>' . $prods['name']
-                                        . '<br/><b>Count- </b>' . $prods['count']
-                                        . '<br/><b>Price- </b>' . $prods['price']
-                                        . '<br><b>Description- </b>' . $prods['description']
-                                        . '<br/><b>Total price- </b>' . $prods['count'] * $prods['price']
-                                        . '. <br/>'
-                                        . '<p>Thank you.</p>';
-//                        }
-        echo $message;
+                        Dear <b>' . $params['firstName'] . ' ' . $params['lastName'] . '</b> You have bout following product: <br/>';
+                        foreach($prods as $prod){
+                            $message .= '<table border="1px"><tr><td><b>Name</b></td>><td><b>Count</b></td><td><b>Price</b></td><td><b>Description</b></td><td><b>Total price</b></td></tr>
+                                                <tr><td>' . $prod->name . '</td><td>' . $_GET['count'] . '</td><td>' . $prod->price . '</td><td>' . $prod->description . '</td><td>' . $_GET['count'] * $prod->price . '</td></tr></table>';
 
+                            $veryTotalPrice += $_GET['count'] * $prod->price;
+                        }
+            echo $message;
+
+        echo '<br/><b>The price of shopping:</b> ' . $veryTotalPrice;
     }
 }

@@ -34,4 +34,6 @@ if($action == 'approove'){
     $controller = new ProductController();
     $params = $_GET;
     $controller->approove($params);
+    $controller = new OrderController();
+    $controller->insert($params);
 }

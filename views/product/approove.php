@@ -8,6 +8,7 @@
     <br/><br/>
     <b>email:</b>
     <input type="text" name="email">
+    <input type="hidden" name="count" value="<?=$value['count']?>">
     <br/><br/>
     <input type="submit" value="Approove">
 </form>

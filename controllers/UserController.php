@@ -9,8 +9,13 @@
 
  class UserController extends DefaultController
  {
-     public function index(){
-         $userModel = new User();
-         $session = Session::getInstance();
-     }
+//     public function __construct(){
+//         $userModel = new User();
+//         $session = Session::getInstance();
+//     }
+
+        protected $id;
+        protected $first_name;
+        protected $last_name;
+        protected $email;
  }
