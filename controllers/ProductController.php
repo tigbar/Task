@@ -147,8 +147,16 @@ class ProductController extends DefaultController
                     <br/>
                         Dear <b>' . $params['firstName'] . ' ' . $params['lastName'] . '</b> You have bout following product: <br/>';
                         foreach($prods as $prod){
-                            $message .= '<table border="1px"><tr><td><b>Name</b></td>><td><b>Count</b></td><td><b>Price</b></td><td><b>Description</b></td><td><b>Total price</b></td></tr>
-                                                <tr><td>' . $prod->name . '</td><td>' . $_GET['count'] . '</td><td>' . $prod->price . '</td><td>' . $prod->description . '</td><td>' . $_GET['count'] * $prod->price . '</td></tr></table>';
+                            $message .= '<table border="1px">
+                                                <tr>
+                                                    <td><b>Name</b></td><td><b>Count</b></td><td><b>Price</b></td><td><b>Description</b></td><td><b>Total price</b></td></tr>
+                                                <tr><td>' . $prod->name . '</td>
+                                                <td>' . $_GET['count'] . '</td>
+                                                <td>' . $prod->price . '</td>
+                                                <td>' . $prod->description . '</td>
+                                                <td>' . $_GET['count'] * $prod->price . '</td>
+                                                </tr>
+                                            </table><br/>';
 
                             $veryTotalPrice += $_GET['count'] * $prod->price;
                         }

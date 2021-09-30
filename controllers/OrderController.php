@@ -6,6 +6,7 @@ use lib\DataBase;
 use lib\Session;
 use models\Order;
 use models\Product;
+use models\OrderProduct;
 
 class OrderController extends DefaultController
 {
@@ -30,4 +31,6 @@ class OrderController extends DefaultController
 
         $orderModel->insert();
     }
+
+
 }

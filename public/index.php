@@ -31,7 +31,7 @@ if($action == 'list'){
 }
 
 if($action == 'approove'){
-    $controller = new ProductController();
+    $controller = new OrderController();
     $params = $_GET;
     $controller->approove($params);
     $controller = new OrderController();
