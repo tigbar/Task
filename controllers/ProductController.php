@@ -156,4 +156,5 @@ class ProductController extends DefaultController
 
         echo '<br/><b>The price of shopping:</b> ' . $veryTotalPrice;
     }
+    // test
 }
