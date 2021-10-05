@@ -12,7 +12,6 @@ class OrderService
     {
         $orderModel = new Order();
         $userModel = new User();
-
         $orderModel->setUserId($userID);
         $orderModel->setSum($sum);
         $orderModel->setOrderDate();

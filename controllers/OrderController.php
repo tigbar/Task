@@ -28,7 +28,6 @@ class OrderController extends DefaultController
         $userID = $user->insert($params['firstName'], $params['lastName'], $params['email']);
 
         $bigSum = 0;
-
         foreach ($prods as $key=>$value) {
             $bigSum += $value[1] * $value[2];
         }

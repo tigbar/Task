@@ -11,7 +11,6 @@
      {
          $userModel = new User();
          $db =  new DataBase();
-
          $userModel->setFirstName($firstName);
          $userModel->setLastName($lastName);
          $userModel->setEmail($email);

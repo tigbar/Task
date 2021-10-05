@@ -50,6 +50,7 @@ class Product
         return 'products';
     }
 
+
     public function insert()
     {
         $db = DataBase::getInstance();

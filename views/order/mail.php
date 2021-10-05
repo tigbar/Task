@@ -31,5 +31,6 @@ foreach($prods as $prod){
 }
 echo $message;
 
+
 echo '<br/><b>The price of shopping:</b> ' . $veryTotalPrice;
 

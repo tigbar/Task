@@ -15,6 +15,7 @@ if(!$action && $_SERVER['REQUEST_URI'] == '/'){
     $action = 'index';
 }
 
+
 if($action == 'index'){
     $controller = new ProductController();
     die($controller->index());

@@ -47,6 +47,7 @@ class User
         return 'users';
     }
 
+
     public function insert(){
         $db = DataBase::getInstance();
         $table = static::getTableName();

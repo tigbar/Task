@@ -17,6 +17,7 @@
         protected $last_name;
         protected $email;
 
+
         public function insert($firstName, $lastName, $email)
         {
             $userModel = new User();

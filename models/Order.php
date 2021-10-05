@@ -59,6 +59,7 @@ class Order
         return $this->id;
     }
 
+
     public function insertOrderProduct($orderId, $productId, $count)
     {
         $db = DataBase::getInstance();

@@ -34,6 +34,7 @@ class DataBase
         return $query->fetch();
     }
 
+
     public function query($sql, $binds = [], $type='FETCH_OBJ'){
         $query = $this->pdo->prepare($sql);
         $query->execute($binds);

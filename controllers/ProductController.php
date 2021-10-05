@@ -27,7 +27,6 @@ class ProductController extends DefaultController
             $session->set('newProduct', true);
             $this->redirect('/');
         }
-
         $db = DataBase::getInstance();
 
         $products = $db->queryAll('SELECT * FROM ' . $this->productModel->getTableName());
