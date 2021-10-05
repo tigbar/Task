@@ -2,11 +2,11 @@
 
 namespace controllers;
 
-use lib\DataBase;
-use lib\Session;
 use models\Order;
 use models\Product;
-use models\OrderProduct;
+use models\User;
+use Services\OrderService;
+use services\UserService;
 
 class OrderController extends DefaultController
 {
@@ -15,21 +15,48 @@ class OrderController extends DefaultController
     protected $sum;
     protected $order_date;
 
-//    public function __construct(){
-//        $orderModel = new Order();
-//        $productModel = new Product();
-//        $session = Session::getInstance();
-//    }
+    public function approove($params){
 
-    public function insert(){
-        $session = Session::getInstance();
+        $user = new UserService();
+        $orderService = new OrderService();
+        $product = new Product();
+
+        $cartProducts = $_COOKIE['products'];
+
+        $prods = json_decode($cartProducts, true);
+
+        $userID = $user->insert($params['firstName'], $params['lastName'], $params['email']);
+
+        $bigSum = 0;
+
+        foreach ($prods as $key=>$value) {
+            $bigSum += $value[1] * $value[2];
+        }
+        $inserted = $orderService->insert($userID, $bigSum, date('Y.m.d'));
+        foreach ($prods as $key=>$value) {
+            $orderService->insertOrderProduct($inserted, $key, $value[1]);
+        }
+
+
+
+        $dirname = dirname(__DIR__);
+        require_once $dirname . '\views\order\mail.php';
+    }
+
+    public function insert($userID, $sum)
+    {
         $orderModel = new Order();
+        $orderService = new OrderService();
 
-        $orderModel->setUserId($_GET['user_id']); //TODO the 'user_id' index must be replaced by User model's id
-        $orderModel->setSum($_GET['sum']);
-        $orderModel->setOrderDate(date('dd.mm.yyyy'));
+        $lastInserted = $orderService->insert($userID, $sum, date('Y.m.d'));
+    }
 
-        $orderModel->insert();
+    public function selectOne($id)
+    {
+        $orderModel = new Order();
+        $this->id = $id;
+
+        $orderModel->selectOne($this->id);
     }
 
 

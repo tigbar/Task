@@ -1,12 +1,13 @@
 <?php
-use controllers\UserController;
-use controllers\ProductController;
+
+use controllers\{ProductController, OrderController};
 
 spl_autoload_register(function ($class) {
+
     $class = str_replace('\\', '/', $class);
-//    echo $class;die;
-//    require_once __DIR__ . '..\\' . $class . '.php';
-    require_once '../' . $class . '.php';
+    $root = dirname(__DIR__);
+
+    require_once $root . '/' . $class . '.php';
 });
 
 $action = $_GET['action'] ?? '';
@@ -34,6 +35,4 @@ if($action == 'approove'){
     $controller = new OrderController();
     $params = $_GET;
     $controller->approove($params);
-    $controller = new OrderController();
-    $controller->insert($params);
 }

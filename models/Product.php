@@ -60,4 +60,10 @@ class Product
         return $this;
     }
 
+    public function getProductsByIds(array $ids) {
+        $db = DataBase::getInstance();
+        $sql = 'select * from ' . $this->getTableName() . ' where id in (' . implode(',', $ids) . ')';
+        return $db->queryAll($sql, $ids);
+    }
+
 }

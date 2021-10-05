@@ -46,4 +46,15 @@ class User
     public function getTableName(){
         return 'users';
     }
+
+    public function insert(){
+        $db = DataBase::getInstance();
+        $table = static::getTableName();
+
+        $sql = "INSERT INTO " . $this->getTableName() . "(`first_name`, `last_name`, `email`) VALUES (?,?,?)";
+        $db->query($sql, [$this->getFirstName(), $this->getLastName(), $this->getEmail()]);
+        $this->id = $db->lastInsertedId();
+        return $this->id;
+
+    }
 }

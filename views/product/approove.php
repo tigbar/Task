@@ -1,5 +1,6 @@
 <form method="get" action="/">
     <input type="hidden" name="action" value="approove">
+    <input type="hidden" name="totalSum" value=" . <?=$totalSum?> . ">
     <b>First name:</b>
     <input type="text" name="firstName">
     <br/><br/>
